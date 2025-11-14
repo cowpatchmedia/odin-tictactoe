@@ -1,6 +1,7 @@
 /* reference to board html element so that I can add cells by JS. */
 const boardEl = document.getElementById("board");
 
+/* create board on screen using buttons and divs. */
 function createBoard() {
     boardEl.innerHTML="";
 
@@ -13,14 +14,41 @@ function createBoard() {
         /* set as empty when game starts.*/
         cell.textContent="";
         boardEl.appendChild(cell);
-
-        cell.addEventListener("click", (e) => {
-            /* record clicked cell to dataset index. */
-            const index = Number(e.currentTarget.dataset.index);
-            console.log(`Cell ${index} clicked`);
-        });
     };
 };
 
+function attachCellListeners(game) {
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach(cell => {
+        cell.addEventListener("click", (e) => {
+            /* record clicked cell to dataset index. */
+            const index = Number(e.currentTarget.dataset.index);
+
+            /* play round */
+            game.playRound(index);
+
+            /* update board buttons to match internal board*/
+            const boardState=GameBoard.getBoard();
+
+            cells.forEach((c, i) => {
+                c.textContent = boardState[i];
+            });
+        });
+    });
+};
+
+/* resets board DOM */
+function updateBoardDOM() {
+    const cells = document.querySelectorAll(".cell");
+    const boardState = GameBoard.getBoard();
+    cells.forEach((c, i) => {
+        c.textContent = boardState[i];
+    });
+}
+
+const game=GameController();
+
 /* run create board function*/
 createBoard();
+attachCellListeners(game);
