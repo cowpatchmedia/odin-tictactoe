@@ -10,8 +10,34 @@
 
 </head>
 <body>
-    Hello world!
+    <main class="container">
 
+        <header id="header" role="banner">
+            <h1 id="title">Cowpatch Tic Tac Toe</h1>
+            <p id="message" area-live="polite">Welcome - click a cell to start</p>
+        </header>
+
+        <section id="players" aria-label="Players and scores">
+            <div class="player" id="player1">
+                <span class="name" id="player1-name">Player 1</span>
+                <span class="name" id="player1-score">0</span>                
+            </div>
+
+            <div class="player" id="player2">
+                <span class="name" id="player2-name">Player 2</span>
+                <span class="name" id="player2-score">0</span>
+            </div>
+        </section>
+
+        <section id="board-area" aria-label="Tic tac toe board">
+            <div id="board" role="grid" aria-label="Game board"></div>
+        </section>
+
+        <section id="controls">
+            <button id="reset">Reset Game</button>
+        </section>
+
+    </main>
 
     <script src="scripts.js"></script>
 
