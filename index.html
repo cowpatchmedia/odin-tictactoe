@@ -17,6 +17,7 @@
             <p id="message" area-live="polite">Welcome - click a cell to start</p>
         </header>
 
+        <!-- aria is for screen readers. -->
         <section id="players" aria-label="Players and scores">
             <div class="player" id="player1">
                 <span class="name" id="player1-name">Player 1</span>
@@ -29,6 +30,7 @@
             </div>
         </section>
 
+        <!-- include role so that browser knows that the board is a grid although its a div.-->
         <section id="board-area" aria-label="Tic tac toe board">
             <div id="board" role="grid" aria-label="Game board"></div>
         </section>
@@ -39,8 +41,8 @@
 
     </main>
 
-    <script src="script.js"></script>
-    <script src="ui.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/ui.js"></script>
 
 </body>
 </html>
