@@ -45,27 +45,39 @@ const Player = (name, marker) => {
     /* I don't think its strictly necessary to make marker and name private but I'm doing it to standardize how I treat variables.*/
     const getName = () => name;
     const getMarker = () => marker;
+    const setName = (newName) => {
+        name = newName;
+    };
     
-    return {getName, getMarker, addPoint, getScore};
+    return {getName, getMarker, addPoint, getScore, setName};
 };
 
 /* create players outside the controller so the ui can access for score display*/
-const player1 = Player("Click Me", "X");
-const player2 = Player("Click Me Also", "O")
+const player1 = Player("Player 1", "X");
+const player2 = Player("Player 2", "O")
 
 /* another factory function to this one for the game controller which will be the glue that ties my player and gameBoard together. */ 
 /* the game flow is as follows: place move, print board, check win, check draw. */
 const GameController = (p1, p2) => {
 
-    /* set up players inside function*/
-    let currentPlayer = p1;
+    /* store players */
+    const players = [p1, p2];
+
+    /* track who starts first, start with p2 so p1 goes first */
+    let lastStarterIndex = 1;
+    let currentPlayerIndex = 0;
+    let currentPlayer = players[currentPlayerIndex];
 
     /* sets game over to be false when program is loaded*/
     let gameOver = false;
 
+    let message = "Change your name or click a cell to start";
+
     /* ternary operator. If the current player is player 1, then switch to player 2, otherwise switch to player 1.*/
     const switchPlayer = () => {
-        currentPlayer = currentPlayer === p1 ? p2 : p1;
+        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+        currentPlayer = players[currentPlayerIndex];
+        message = `It's ${currentPlayer.getName()}'s turn.`;
     };
 
     /* harcode all winning combinations (3 in a row)*/
@@ -101,23 +113,21 @@ const GameController = (p1, p2) => {
     const playRound = (index) => {
         /* displays message if game over.*/
         if(gameOver) {
-            message = "Game is over.  Reset to play again."
+            message = "Game is over.  Reset to play again.";
             return;
         }
 
         /* if a player tries to place a marker which currently has a marker, this will return immediately with no move played.*/
         const movePlaced = GameBoard.placeMove(index, currentPlayer.getMarker());
         if (!movePlaced) {
-            message = ("You can't go there! Move is already taken.");
+            message = "You can't go there! Move is already taken.";
             return;
         }
 
-        /* prints new board on screen after each move */
-        GameBoard.printBoard();
-
         /* if the win function was reached, reset board. */
         if (checkWin()) {
-            console.log(`${currentPlayer.getName()} wins!`);
+            message = `${currentPlayer.getName()} wins!`;
+            console.log(message);
             currentPlayer.addPoint();
             gameOver = true;
             return;
@@ -125,7 +135,8 @@ const GameController = (p1, p2) => {
 
         /* if the tie function was reached, reset board. */
         if (checkDraw()) {
-            console.log("It's a draw!");
+            message = "It's a draw!";
+            console.log(message);
             gameOver = true;
             return;
         }
@@ -137,14 +148,19 @@ const GameController = (p1, p2) => {
     /* reset all variables and print game reset. */
     const resetGame = () => {
         GameBoard.reset();
-        /* figure out how to alternate player turns*/
-        currentPlayer = p1;
+        
+        /* alternate player turns on reset*/
+        currentPlayerIndex = lastStarterIndex === 0 ? 1 : 0; 
+        lastStarterIndex = currentPlayerIndex;
+        currentPlayer = players[currentPlayerIndex];
+        
         gameOver = false;
         message = `It's ${currentPlayer.getName()}'s turn.`;
         console.log("Game reset!");
         GameBoard.printBoard();
     };
 
+    /* expose variables to the game ui*/
     const getMessage = () => message;
     const isOver = () => gameOver;
     const getCurrentPlayer = () => currentPlayer;
@@ -153,8 +169,8 @@ const GameController = (p1, p2) => {
     return { 
         playRound, 
         resetGame,
-        getMessage,
-        isOver,
-        getCurrentPlayer,
+        getMessage: () => message,
+        isOver: () => gameOver,
+        getCurrentPlayer: () => currentPlayer,
     };
 };

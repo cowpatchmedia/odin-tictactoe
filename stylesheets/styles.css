@@ -1,3 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 1rem;
+}
+
+main.container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.title-area {
+    text-align: center;
+    flex: 1;
+}
+
+#title {
+    margin: 0;
+    font-size: 2rem;
+    color: #333;
+}
+
+#message {
+    margin: 0.25rem 0 0;
+    font-style: italic;
+    color: #555;
+}
+
+.player-box {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    min-width: 120px; 
+    border: 1px solid #007bff;
+}
+
+.player-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px; 
+}
+
+.name-input {
+    width: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.player-info .name {
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+.player-info .name:hover {
+    color: #007bff;
+}
+
+.player.active {
+    font-weight: bold;
+    color: #007bff;
+    background-color: #e6f2ff;
+    border: 1px solid #007bff;
+}
+
 #board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
@@ -9,15 +86,33 @@
 .cell {
     width: 100px;
     height: 100px;
-    font-size: 2rem;
+    font-size: 4rem; 
+    font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #444;
 }
 
-.player.active {
+.cell:hover {
+    background-color: #f9f9f9;
+}
+
+#reset {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
-    color: #007bff; /* Or any color you like */
-    border-bottom: 2px solid #007bff;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #dc3545;
+    color: white;
+}
+
+#reset:hover {
+    background-color: #c82333;
 }

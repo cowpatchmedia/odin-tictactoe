@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cowpatch tictactoe</title>
+    <title>Tic Tac Toe</title>
 
     <link rel="stylesheet" type="text/css" href="stylesheets/modern-normalize.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
@@ -13,24 +13,31 @@
     <main class="container">
 
         <header id="header" role="banner">
-            <h1 id="title">Cowpatch Tic Tac Toe</h1>
-            <p id="message" area-live="polite">Welcome - click a cell to start</p>
+            
+            <div class="player player-box" id="player1">
+                <div class="player-info">
+                    <span class="name" id="player1-name"></span>
+                    <span class="score-label">: </span>
+                    <span class="score" id="player1-score">0</span>
+                </div>
+            </div>
+
+            <div class="title-area">
+                <h1 id="title">Tic Tac Toe</h1>
+                <p id="message" aria-live="polite">Change your name or click a cell to start</p>
+            </div>
+
+            <div class="player player-box" id="player2">
+                <div class="player-info">
+                    <span class="name" id="player2-name">Player 2</span>
+                    <span class="score-label">: </span>
+                    <span class="score" id="player2-score">0</span>
+                </div>
+            </div>
+
         </header>
 
-        <!-- aria is for screen readers. -->
-        <section id="players" aria-label="Players and scores">
-            <div class="player" id="player1">
-                <span class="name" id="player1-name">Player 1</span>
-                <span class="name" id="player1-score">0</span>                
-            </div>
-
-            <div class="player" id="player2">
-                <span class="name" id="player2-name">Player 2</span>
-                <span class="name" id="player2-score">0</span>
-            </div>
-        </section>
-
-        <!-- include role so that browser knows that the board is a grid although its a div.-->
+        <!-- include role so that browser knows that the board is a grid although its a div for screen readers.-->
         <section id="board-area" aria-label="Tic tac toe board">
             <div id="board" role="grid" aria-label="Game board"></div>
         </section>
@@ -46,5 +53,3 @@
 
 </body>
 </html>
-
-<!-- highlight cells after winning, show you win message, change names, make pretty, alternate player turns on game over, remove inner html from ui.js, GAME OVER TAKES AN ADDITIONAL CLICK-->
