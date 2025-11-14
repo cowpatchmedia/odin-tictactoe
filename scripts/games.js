@@ -49,21 +49,23 @@ const Player = (name, marker) => {
     return {getName, getMarker, addPoint, getScore};
 };
 
+/* create players outside the controller so the ui can access for score display*/
+const player1 = Player("Click Me", "X");
+const player2 = Player("Click Me Also", "O")
+
 /* another factory function to this one for the game controller which will be the glue that ties my player and gameBoard together. */ 
 /* the game flow is as follows: place move, print board, check win, check draw. */
-const GameController = () => {
+const GameController = (p1, p2) => {
 
-    /* set up players inside the module as private variables*/
-    const player1 = Player("Player 1", "X");
-    const player2 = Player("Player 2", "O");
-    let currentPlayer = player1;
+    /* set up players inside function*/
+    let currentPlayer = p1;
 
     /* sets game over to be false when program is loaded*/
     let gameOver = false;
 
     /* ternary operator. If the current player is player 1, then switch to player 2, otherwise switch to player 1.*/
     const switchPlayer = () => {
-        currentPlayer = currentPlayer === player1 ? player2 : player1;
+        currentPlayer = currentPlayer === p1 ? p2 : p1;
     };
 
     /* harcode all winning combinations (3 in a row)*/
@@ -77,7 +79,7 @@ const GameController = () => {
         /* private variable for game board*/
         const board = GameBoard.getBoard();
         
-        /* some just checks if the current game board matches any win condition in array. use some since only 1 array element has to match.*/
+        /* "some" just checks if the current game board matches any win condition in array. use "some" since only 1 array element has to match.*/
         return winningCombos.some(combo => {
             /* local variable to check winning combinations ie. 1, 2, 3 would be winning, 1, 3, 8 is not. */
             const [a,b,c] = combo;
@@ -99,14 +101,14 @@ const GameController = () => {
     const playRound = (index) => {
         /* displays message if game over.*/
         if(gameOver) {
-            console.log("Game is over. Reset to play again.");
+            message = "Game is over.  Reset to play again."
             return;
         }
 
         /* if a player tries to place a marker which currently has a marker, this will return immediately with no move played.*/
-        const movePlaced = GameBoard.placeMove(index, currentPlayer.marker);
+        const movePlaced = GameBoard.placeMove(index, currentPlayer.getMarker());
         if (!movePlaced) {
-            console.log("Invalid!");
+            message = ("You can't go there! Move is already taken.");
             return;
         }
 
@@ -115,7 +117,7 @@ const GameController = () => {
 
         /* if the win function was reached, reset board. */
         if (checkWin()) {
-            console.log(`${currentPlayer.name} wins!`);
+            console.log(`${currentPlayer.getName()} wins!`);
             currentPlayer.addPoint();
             gameOver = true;
             return;
@@ -130,24 +132,29 @@ const GameController = () => {
 
         /* after move run switch player function. */
         switchPlayer();
-        console.log(`It's now ${currentPlayer.name}'s turn.`);
     };
 
     /* reset all variables and print game reset. */
     const resetGame = () => {
         GameBoard.reset();
-        currentPlayer.player1;
+        /* figure out how to alternate player turns*/
+        currentPlayer = p1;
         gameOver = false;
+        message = `It's ${currentPlayer.getName()}'s turn.`;
         console.log("Game reset!");
         GameBoard.printBoard();
-        currentPlayer = player1; 
     };
 
+    const getMessage = () => message;
+    const isOver = () => gameOver;
+    const getCurrentPlayer = () => currentPlayer;
 
-    return { playRound, resetGame };
+
+    return { 
+        playRound, 
+        resetGame,
+        getMessage,
+        isOver,
+        getCurrentPlayer,
+    };
 };
-
-const player1 = Player("Alice", "X");
-player1.addPoint();
-console.log(player1.getScore()); // 1
-console.log(player1.score); // undefined (private)

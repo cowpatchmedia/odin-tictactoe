@@ -15,3 +15,9 @@
     align-items: center;
     justify-content: center;
 }
+
+.player.active {
+    font-weight: bold;
+    color: #007bff; /* Or any color you like */
+    border-bottom: 2px solid #007bff;
+}
